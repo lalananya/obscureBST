@@ -3,9 +3,9 @@
  * we are know gping to balance with each operation, so the other operations like searching becomes easy
  * KEY : TO KEEP HEIGHT OF THE TREE AS SMALL AS POSSIBLE
  * Types and its basic idea: 
- *  AVL Tree - try balance the left and right subtree, where the difference should not be more than 1 for every node
- *  Red/Black Tree - 
- *  Splay Tree - bring the most recent accessed / inserted element to the root by performing rotations (splaying)
+ *      AVL Tree - try balance the left and right subtree, where the difference should not be more than 1 for every node
+ *      Red/Black Tree - 
+ *      Splay Tree - bring the most recent accessed / inserted element to the root by performing rotations (splaying)
  */
 
 class AVLTree {
@@ -24,65 +24,75 @@ class AVLTree {
     /* Checking Balancing Factor on AVL Tree */
 
     int checkBalanceFactor(Node head){
-        int leftH = head.left !=null ? head.left.height : 0;
-        int rightH = head.right !=null ? head.right.height : 0;
+        int leftH = height(head.left);
+        int rightH = height(head.right);
         return leftH - rightH;
     }
 
     void updateHeight(Node head){
-        int leftH = head.left !=null ? head.left.height : 0;
-        int rightH = head.right !=null ? head.right.height : 0;
+        int leftH = height(head.left);
+        int rightH = height(head.right);
         head.height = 1 + Math.max(leftH, rightH);
     }
     
     /* Insertion on AVL Tree */
 
-    Node insertElement(Node head, int element){
+    void insertElement(int element){
+        root = insertElementOperation(root, element);
+    }
+
+    Node insertElementOperation(Node head, int element){
         if(head == null){
             return new Node(element);
         }
         else {
-            if(head.id > element){
-                /* loop over left subtree until a place found */
-                head.left = this.insertElement(head.left,element);
+            if(element < head.id) {
+                head.left = insertElementOperation(head.left, element);
             }
-            else if (head.id < element) {
-                /* loop over right subtree until a place found */         
-                head.right = this.insertElement(head.right,element);
+            else if(element > head.id) {
+                head.right = insertElementOperation(head.right, element);
             }
-            else return head;
         }
-        this.updateHeight(head);
 
-        /* logic needs recheck */
+        updateHeight(head);
+        int factor = checkBalanceFactor(head);
 
-        int factor = this.checkBalanceFactor(head);
-        if (factor > 1 && element < head.left.id) /* right rotation */
-            return rightRotate(head);
- 
-        if (factor < -1 && element > head.right.id) /* left rotation */
-            return leftRotate(head);
-
-        if (factor > 1 && element > head.left.id) { /* left right rotation */
-            head.left = leftRotate(head.left);
-            return rightRotate(head);
-        }
- 
-        if (factor < -1 && element < head.right.id) { /* right left rotation */
-            head.right = rightRotate(head.right);
-            return leftRotate(head);
-        }
+        // System.out.println("-----------------------------------start-------------------------------------------------");
+        //     System.out.println("Factor-" + factor + "Element : " + element + "current pointer : " + head.id );
+        //     if(head.left != null) {
+        //         System.out.println("current's left : " + head.left.id);
+        //     }
+        //     if(head.right != null) {
+        //         System.out.println("current's right : " + head.right.id);
+        //     }
+        // System.out.println("------------------------------------end-------------------------------------------------");
         
+        /* to fix rotation logic */
+        if(factor > 0 && head.left != null && head.left.id > element) {
+            rightRotate(head);
+        }
+        if(factor > 0 && head.left != null && head.left.id < element) {
+            head.left = leftRotate(head.left);
+            rightRotate(head);
+        }
+        if(factor < 0 && head.right != null && head.right.id > element) {
+            leftRotate(head);
+        }
+        if(factor < 0 && head.right != null && head.right.id < element) {
+            head.right = rightRotate(head.right);
+            leftRotate(head);
+        }
+
         return head;
     }
 
     /* inOrder */
 
-    void inOrder(Node head){
+    void preOder(Node head){
         if(head !=null){
-            inOrder(head.left);
             System.out.println("HEAD -> " + head.id + "Height ->" + head.height);
-            inOrder(head.right);
+            preOder(head.left);
+            preOder(head.right);
         }
     }
 
@@ -111,46 +121,55 @@ class AVLTree {
      */
 
     Node leftRotate(Node head){
-        Node hr = head.right;
-        Node hrf = hr.left;
+        if(head != null) {
+            Node hr = head.right;
+            Node hrf = hr!=null ? hr.left : null;
 
-        hr.left = head;
-        head.right = hrf;
-
-        updateHeight(head);
-        updateHeight(hr);
-
-        return hr;
+            if(hr != null && head !=null){
+                hr.left = head;
+                head.right = hrf;
+                updateHeight(head);
+                updateHeight(hr);
+                return hr;   
+            }
+            return head;
+        }
+        return head;
     }
 
     Node rightRotate(Node head){
-        Node hr = head.left;
-        Node hrf = hr.right;
+        if(head != null){
+            Node hr = head.left;
+            Node hrf = hr!=null ? hr.right : null;
 
-        hr.right = head;
-        head.left = hrf;
-
-        updateHeight(head);
-        updateHeight(hr);
-
-        return hr;
+            if(hr!= null && head !=null){
+                hr.right = head;
+                head.left = hrf;
+                updateHeight(head);
+                updateHeight(hr);
+                return hr;
+            } 
+            
+            return head;
+        }
+        return head;
     }
     /* ---------------------- */
 
     public static void main(String[] args) {
         AVLTree avlObj = new AVLTree();
-        avlObj.root = avlObj.insertElement(avlObj.root, 8);
-        avlObj.root = avlObj.insertElement(avlObj.root, 7);
-        avlObj.root = avlObj.insertElement(avlObj.root, 6);
-        avlObj.root = avlObj.insertElement(avlObj.root, 9);
-        avlObj.root = avlObj.insertElement(avlObj.root, 2);
-        avlObj.root = avlObj.insertElement(avlObj.root, 3);
-        avlObj.root = avlObj.insertElement(avlObj.root, 10);
-        avlObj.root = avlObj.insertElement(avlObj.root, 1);
-        avlObj.root = avlObj.insertElement(avlObj.root, 12);
+        avlObj.insertElement(8);
+        avlObj.insertElement(7);
+        avlObj.insertElement(6);
+        avlObj.insertElement(9);
+        avlObj.insertElement(2);
+        avlObj.insertElement(3);
+        avlObj.insertElement(10);
+        avlObj.insertElement(1);
+        avlObj.insertElement(12);
 
-        avlObj.inOrder(avlObj.root);
-        avlObj.searchElement(avlObj.root, 123);
+        avlObj.preOder(avlObj.root);
+        // avlObj.searchElement(avlObj.root, 123);
     }
 }
 

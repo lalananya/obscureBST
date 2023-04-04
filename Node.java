@@ -9,6 +9,6 @@ class Node {
 
     Node(int id){
         this.id = id;
-        height = 1;
+        height = 0;
     }
 }
