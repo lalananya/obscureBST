@@ -1,4 +1,11 @@
-/* linked representation of a tree */
+/* linked representation of a tree
+ * @addNodesToTree
+ * @calculateHeight
+ * @displayTree
+ * @inOrder
+ * @postOrder
+ * @preorder
+ */
 public class Creation {
     Node root;
     static int size;
