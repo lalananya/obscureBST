@@ -4,8 +4,10 @@
  * KEY : TO KEEP HEIGHT OF THE TREE AS SMALL AS POSSIBLE
  * Types and its basic idea: 
  *      AVL Tree - try balance the left and right subtree, where the difference should not be more than 1 for every node
+ *                 key is balance as much as possible , accessing might take O(h)
  *      Red/Black Tree - 
- *      Splay Tree - bring the most recent accessed / inserted element to the root by performing rotations (splaying)
+ *      Splay Tree - bring the most recent accessed / inserted element to the root by performing rotations (splaying), searching
+ *                   insertion , deletion O(logn), do not guarantee balanced, key is frequently accessed close to root    
  */
 
 class AVLTree {
@@ -86,8 +88,6 @@ class AVLTree {
         return head;
     }
 
-    /* inOrder */
-
     void preOder(Node head){
         if(head !=null){
             System.out.println("HEAD -> " + head.id + "Height ->" + head.height);
@@ -96,13 +96,17 @@ class AVLTree {
         }
     }
 
-    /* Deletion on AVL Tree */
+    /* Deletion on AVL Tree :
+     * after every deletion , balance the tree
+     */
 
     void deleteElement(){
 
     }
 
-    /* Searching on AVL Tree */
+    /* Searching on AVL Tree:
+     * try searching without balancing (BST.java), and with balancing
+     */
 
     void searchElement(Node head, int element){
         if(head != null){
@@ -156,8 +160,7 @@ class AVLTree {
     }
     /* ---------------------- */
 
-    public static void main(String[] args) {
-        AVLTree avlObj = new AVLTree();
+    void avl(AVLTree avlObj) {
         avlObj.insertElement(8);
         avlObj.insertElement(7);
         avlObj.insertElement(6);
@@ -167,12 +170,145 @@ class AVLTree {
         avlObj.insertElement(10);
         avlObj.insertElement(1);
         avlObj.insertElement(12);
-
         avlObj.preOder(avlObj.root);
         // avlObj.searchElement(avlObj.root, 123);
     }
 }
 
+class Splay {
+    
+    Node root;
+
+    Splay(){
+        root = null;
+    }
+    Node rotate(Node head, int check){
+        /* 0 : zig rotation - single right rotation
+         * 1 : zag rotation - single left rotation
+         * 2 : zig/ zag rotation - right rotate then left
+         * 3 : zag/ zig rotation - left rotate the right
+         * 4 : zig/ zig rotation - double right rotation
+         * 5 : zag/ zag rotation - double left rotation
+         */
+        switch(check){
+            case 0 : return zigRotate(head);
+            case 1 : return zagRotate(head);
+            case 2 : return zigzagRotate(head);
+            case 3 : return zagzigRotate(head);
+            case 4 : return zigzigRotate(head);
+            case 5 : return zagzagRotate(head);
+            default :  return head;
+        }
+    }
+
+    Node zagRotate(Node head) {
+        Node nextHead = head.right;
+        Node leftRight = nextHead.left;
+
+        nextHead.left = head;
+        head.right = leftRight;
+        
+        updateHeight(nextHead);
+        updateHeight(head);
+        
+        return nextHead;
+    }
+
+    Node zigRotate(Node head) {
+        Node nextHead = head.left;
+        Node leftRight = nextHead.right;
+
+        nextHead.right = head;
+        head.left = leftRight;
+        
+        updateHeight(nextHead);
+        updateHeight(head);
+
+        return nextHead;
+    }
+
+    Node zagzagRotate(Node head) {
+        head = zagRotate(head);
+        head = zagRotate(head);
+        return head;
+    }
+
+    Node zigzigRotate(Node head) {
+        head = zigRotate(head);
+        head = zigRotate(head);
+        return head;
+    }
+
+    Node zagzigRotate(Node head) {
+        head = zagRotate(head);
+        head = zigRotate(head);
+        return head;
+    }
+    
+    Node zigzagRotate(Node head) {
+        head = zigRotate(head);
+        head = zagRotate(head);
+        return head;
+    }
+    
+    void updateHeight(Node root){
+        int leftH = root.left != null ? root.left.height : 0;
+        int rightH = root.right !=null ? root.right.height : 0;
+        root.height = 1 + Math.max(leftH, rightH);
+    }
+
+    void insertElement(int id){
+        root = insertOperation(root, id);
+    }
+
+    Node insertOperation(Node root, int id){
+        if(root == null){
+            return new Node(id);
+        }
+        else if(id < root.id) {
+            root.left = insertOperation(root.left, id);
+        }
+        else if(id > root.id) {
+            root.right = insertOperation(root.right, id);
+        }
+
+        System.out.println("update Height, called with : " + root.id + " before height" + root.height );
+        updateHeight(root);
+        System.out.println("update Height, called with : " + root.id + " updated height" + root.height);
+
+        return root;
+    }
+
+    void preOder(Node root){
+        if(root != null){
+            System.out.println("Element : " + root.id + " Height : " + root.height);
+            preOder(root.left);
+            preOder(root.right);
+        }
+    }
+
+    void splay(Splay splay){
+        splay.insertElement(50);
+        splay.insertElement(60);
+        splay.insertElement(55);
+        splay.insertElement(20);
+        splay.insertElement(10);
+        splay.insertElement(25);
+        splay.insertElement(65);
+        splay.preOder(splay.root);
+    }
+
+}
 
 public class SelfBalancing {
+    
+    static void initiate(){
+        // AVLTree avlObj = new AVLTree();
+        // avlObj.avl(avlObj);
+        Splay splayObj = new Splay();
+        splayObj.splay(splayObj);
+    }
+    public static void main(String[] args) {
+        initiate();
+    }
 }
