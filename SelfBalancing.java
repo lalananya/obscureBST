@@ -182,6 +182,8 @@ class Splay {
     Splay(){
         root = null;
     }
+
+    /* all functions not needed , added just to understand */
     Node rotate(Node head, int check){
         /* 0 : zig rotation - single right rotation
          * 1 : zag rotation - single left rotation
@@ -208,9 +210,6 @@ class Splay {
         nextHead.left = head;
         head.right = leftRight;
         
-        updateHeight(nextHead);
-        updateHeight(head);
-        
         return nextHead;
     }
 
@@ -221,9 +220,6 @@ class Splay {
         nextHead.right = head;
         head.left = leftRight;
         
-        updateHeight(nextHead);
-        updateHeight(head);
-
         return nextHead;
     }
 
@@ -251,32 +247,69 @@ class Splay {
         return head;
     }
     
-    void updateHeight(Node root){
-        int leftH = root.left != null ? root.left.height : 0;
-        int rightH = root.right !=null ? root.right.height : 0;
-        root.height = 1 + Math.max(leftH, rightH);
+    /* all functions not needed , added just to understand */
+
+    Node performSplay(Node head, int id){
+        if(head == null || head.id == id) {
+            return head; /* the element is either null or present at head */
+        }
+
+        if(head.id > id) { /* element lies in left */
+            
+            if(head.left == null ) return head;
+            if(head.left.id > id) {
+                    head.left.left = performSplay(head.left.left,id);
+                    head = zigRotate(head);
+            }
+            else if(head.left.id < id){
+                    head.left.right = performSplay(head.left.right, id);
+                    if(head.left.right !=null){
+                        head.left = zagRotate(head.left);
+                    }
+            }
+            return head.left == null ? head : zigRotate(head);
+        }
+        else {
+            if(head.right == null) return head;
+            if(head.right.id > id) {
+                head.right.left = performSplay(head.right.left, id);
+                if(head.right.left !=null) {
+                    root.right = zigRotate(head.right);
+                }
+            }
+            else if( head.right.id  < id) {
+                head.right.right = performSplay(head.right.right, id);
+                head = zagRotate(head);
+            }
+            return head.right == null ? head : zagRotate(head); 
+        }
     }
 
     void insertElement(int id){
         root = insertOperation(root, id);
     }
 
-    Node insertOperation(Node root, int id){
-        if(root == null){
+    Node insertOperation(Node head, int id){
+        if(head == null){
             return new Node(id);
         }
-        else if(id < root.id) {
-            root.left = insertOperation(root.left, id);
-        }
-        else if(id > root.id) {
-            root.right = insertOperation(root.right, id);
-        }
 
-        System.out.println("update Height, called with : " + root.id + " before height" + root.height );
-        updateHeight(root);
-        System.out.println("update Height, called with : " + root.id + " updated height" + root.height);
+        head = performSplay(head, id); /* to bring the closest leaf to node */
 
-        return root;
+        if(head.id == id) return head;
+        Node newnode = new Node(id);
+
+        if(head.id > id) {
+            newnode.left = head;
+            newnode.right = head.right;
+            head.right = null;
+        }
+        else {
+            newnode.left = newnode;
+            newnode.right = head.right;
+            head.right = null;
+        }
+        return newnode;
     }
 
     void preOder(Node root){
