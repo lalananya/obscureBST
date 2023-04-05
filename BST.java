@@ -42,23 +42,22 @@ public class BST {
                     root = null;
                     System.out.println("elememt deleted :" + root );
                 }
-                else if(root.left !=null && root.right == null){
+                else if(root.left !=null && root.right == null){ /* replacing with the left */
                     root.id = root.left.id;
                     root.left = null;
                     System.out.println("elememt deleted :" + root );
                 }
-                else if(root.right !=null && root.left == null){
+                else if(root.right !=null && root.left == null){ /* replacing with the right */
                     root.id = root.right.id;
                     root.right = null;
                     System.out.println("elememt deleted :" + root );
                 }
                 else {
-                    /* get the inOrder Successor */
                     Node current = root;
                     while(current.left != null){
                         current = current.left;
                     }
-                    root.id = current.id;
+                    root.id = current.id; /* replacing with the left most by inOrder */
                     current = null;
                     System.out.println("elememt deleted :" + root );
                     
