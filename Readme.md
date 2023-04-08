@@ -53,8 +53,10 @@ Binary Search Tree
     
     h(root8) = 0 - 2  = -2, left rotate it
 
-        9
-    8       10  , root changes to 9
+            9
+        8       10  
+    
+    , root changes to 9
 
     if element 10 needs to be searched, in the first tree, we will get at the third comparision, 
     but in the second tree, we will get at the second comparision,
@@ -64,22 +66,24 @@ Binary Search Tree
 
     CASE 2 :
 
-            8
-        6
-    5
+                8
+            6
+        5
 
     h(root8) = 2 - 0 = 2, right rotate it
 
-        6
-    5       8, root changes to 6
+            6
+        5       8
+    
+    , root changes to 6
 
     CASE 3/4 : 
 
-                        8
-                6                 10   
-            5       7         9        15
-        4
-    3
+                            8
+                    6                   10   
+                5       7           9        15
+            4
+        3
 
     let's say the last element inserted is 3, 
     unbalaced nodes
@@ -103,26 +107,31 @@ Binary Search Tree
 
     leftRotate by root.left
 
-            10
-        9
-    7
+                10
+            9
+        7
 
-    rightRotate it       9
-                     7       10
+    rightRotate it       
+            
+            9
+        7       10
 
     this is double rotation, in this case suppose we try to rotate right first
     below would be the structure, this is still not balance
-    7
-        10
-       9     
+    
+            7
+                10
+        9     
 
     rightRotate by root.left
 
-    7
-        9
-            10
-    now, left rotate it for         9
-                                7       10
+        7
+            9
+                10
+
+    now, left rotate it for         
+                9
+            7       10
 
     Above are just the known cases, we are going to add some random exceptions as well, to make the rotations complex
     still would want the tree to be balanced
