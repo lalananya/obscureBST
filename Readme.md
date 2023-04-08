@@ -47,9 +47,9 @@ Binary Search Tree
     
     CASE 1 :
 
-    8
-        9   
-            10
+        8
+            9   
+                10
     
     h(root8) = 0 - 2  = -2, left rotate it
 
