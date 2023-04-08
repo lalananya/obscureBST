@@ -129,9 +129,10 @@ Binary Search Tree
             9
                 10
 
-    now, left rotate it for         
-                9
-            7       10
+    now, left rotate it for
+
+            9
+        7       10
 
     Above are just the known cases, we are going to add some random exceptions as well, to make the rotations complex
     still would want the tree to be balanced
