@@ -178,29 +178,179 @@ class AVLTree {
         return current;
     }
 
-    void start(){
-        root = insertElement(root,50);
-        root = insertElement(root,40);
-        root = insertElement(root,45);
-        root = insertElement(root,60);
-        root = insertElement(root,70);
-        root = insertElement(root,65);
-        root = insertElement(root,20);
-        root = insertElement(root,10);
-        System.out.println("Current Root" + root.id);
-        root = deleteElement(root,10);
-        preOder(root);
+    static void start(){
+        AVLTree obj = new AVLTree();
+        obj.root = obj.insertElement(obj.root,50);
+        obj.root = obj.insertElement(obj.root,40);
+        obj.root = obj.insertElement(obj.root,45);
+        obj.root = obj.insertElement(obj.root,60);
+        obj.root = obj.insertElement(obj.root,70);
+        obj.root = obj.insertElement(obj.root,65);
+        obj.root = obj.insertElement(obj.root,20);
+        obj.root = obj.insertElement(obj.root,10);
+        System.out.println("Current obj.Root" + obj.root.id);
+        obj.root = obj.deleteElement(obj.root,10);
+        obj.preOder(obj.root);
 
     }
 }
 
 class RedBlack {
 
+    RedBlackNodes root;
+    RedBlack(){
+        root = null;
+    }
+    /* nodes are colored either red or black */
+    class RedBlackNodes {
+        int id;
+        RedBlackNodes left;
+        RedBlackNodes right;
+        char color;
+        RedBlackNodes parent;
+
+        RedBlackNodes(int id){
+            this.id = id;
+            this.left = null;
+            this.right = null;
+            this.color = 'R';
+            this.parent = null;
+        }
+    }
+
+    RedBlackNodes insert(RedBlackNodes current, int id){
+        if(root == null){
+            return new RedBlackNodes(id);
+        }
+        else {
+            if(id < current.id){
+                current.left = insert(current.left, id);
+                current.left.parent = current;
+                if(current != root){ /* if this is not equal to starting point */
+                    if(current.color == 'R' && current.left.color == 'R'){
+                        /* to judge RR conflict */
+                    }
+                }
+            }
+            else if ( id > current.id) {
+                current.right = insert(current.right, id);
+                current.right.parent = current;
+                if(current != root){ /* if this is not equal to starting point */
+                    if(current.color == 'R' && current.right.color == 'R'){
+                        /* to judge RR conflict */
+                    }
+                }
+            }
+            return current;
+        }
+    }
+
+    static void start(){
+        RedBlack obj = new RedBlack();
+        obj.root = obj.insert(obj.root, 0);
+
+    }
+}
+
+class Splay {
+   
+    Node root = null;
+
+    Node rightRotate(Node head){
+        Node newRoot = head.left;
+        head.left = newRoot.right;
+        newRoot.right = head;
+        return newRoot;
+    }
+
+    Node leftRotate(Node head) {
+        Node newRoot = head.right;
+        head.right = newRoot.left;
+        newRoot.left = head;
+        return newRoot;
+    }
+
+    Node splay(Node head, int id) {
+        if(head == null || head.id == id){
+            return head;
+        }
+        if(head.id > id) {
+            if(head.left == null) return head;
+            if(head.left.id > id) {
+                head.left.left = splay(head.left.left, id);
+                head = rightRotate(head);
+            }
+            else if(head.left.id < id) {
+                head.left.right = splay(head.left.right, id);
+                if(head.left.right != null) {
+                    head.left = leftRotate(head.left);
+                }
+            }
+            return head.left == null ? head : rightRotate(head);
+        }
+        else {
+            if(head.right == null) return head;
+            if(head.right.id > id) {
+                head.right.left = splay(head.right.left, id);
+                if(head.right.left != null){
+                    head.right = rightRotate(head.right);
+                }
+            }
+            else if(head.right.id < id) {
+                head.right.right = splay(head.right.right, id);
+                head = leftRotate(head);
+            }
+            return head.right == null ? head : leftRotate(head);
+        }
+    }
+
+    Node insert(Node head, int id){
+        if(head == null) return new Node(id);
+
+        head = splay(head, id);
+        if(head.id == id) return head;
+
+        Node newnode = new Node(id); /* this has not child */
+        if(head.id > id) {
+            newnode.right = head; /* going to make this root of the returned splayed root */
+            newnode.left = head.left; /* here new node left will be null, splayed root left will be assigned */
+            head.left = null; /* cause no repeated elements, we will point this as null */
+        }
+        else {
+            newnode.left = head;
+            newnode.right = head.right;
+            head.right = null;
+        }
+        System.out.println("------------------");
+        preOder(newnode);
+        return newnode;
+    }
+
+    void preOder(Node node){
+        if(node != null){
+            System.out.println("At : " + node.id);
+            preOder(node.left);
+            preOder(node.right);
+        }
+    }
+
+    static void start(){
+        Splay obj = new Splay();
+        obj.root = obj.insert(obj.root,50);
+        obj.root = obj.insert(obj.root,40);
+        obj.root = obj.insert(obj.root,60);
+        obj.root = obj.insert(obj.root,45);
+        // obj.root = obj.insert(obj.root,55);
+        // obj.root = obj.insert(obj.root,70);
+        // obj.root = obj.insert(obj.root,80);
+    }
 }
 public class SelfBalancing {
     
     static void initiate(){
-        new AVLTree().start();
+        // AVLTree.start();
+        // RedBlack.start();
+        Splay.start();
     }
     public static void main(String[] args) {
         initiate();

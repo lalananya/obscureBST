@@ -45,7 +45,7 @@ Binary Search Tree
     Operation will use recursion, so think of Stack will writing the code
     If -1 > H(left-Right) < 1, perform Rotations
     
-    CASE 1 :
+    **CASE 1 :**
 
         8
             9   
@@ -64,7 +64,7 @@ Binary Search Tree
     reduces the checking of element, reduces time complexity
     now , think about the large number of data.
 
-    CASE 2 :
+    **CASE 2 :**
 
                 8
             6
@@ -77,7 +77,7 @@ Binary Search Tree
     
     , root changes to 6
 
-    CASE 3/4 : 
+    **CASE 3/4 :** 
 
                             8
                     6                   10   
@@ -99,7 +99,7 @@ Binary Search Tree
     NOTE : whenever we insert the element, this is a recursion process so we will keep updating the height as well
     and keep checking for the unbalanced node
 
-    CASE 5/6 : 
+    **CASE 5/6 :** 
 
                 10
             7
@@ -138,9 +138,15 @@ Binary Search Tree
     still would want the tree to be balanced
 
 2. Splay Tree
+   Organisation of the tree on basis of frequently accessed / inserted elements become closer to the root node
 
+   **As rotations are already cleared**
+   Generally in splay structure, rotations can be multiple, left, right, double left, double right, left right, right left
+   Insertion : 
+    
+                 
 3. Red Black Tree
-
+   
 4. AA Tree
 
 5. Treaps
