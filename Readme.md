@@ -138,12 +138,9 @@ Binary Search Tree
     still would want the tree to be balanced
 
 2. Splay Tree
-   Organisation of the tree on basis of frequently accessed / inserted elements become closer to the root node
 
-   **As rotations are already cleared**
-   Generally in splay structure, rotations can be multiple, left, right, double left, double right, left right, right left
-   Insertion : 
-    
+   Organisation of the tree on basis of frequently accessed / inserted elements become closer to the root node
+   before inserting we rotate the tree based on conditions, so that the inserted element is closer to the root or the root itself.
                  
 3. Red Black Tree
    
