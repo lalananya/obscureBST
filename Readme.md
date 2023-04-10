@@ -140,7 +140,11 @@ Binary Search Tree
 2. Splay Tree
 
    Organisation of the tree on basis of frequently accessed / inserted elements become closer to the root node
-   before inserting we rotate the tree based on conditions, so that the inserted element is closer to the root or the root itself.
+
+   Before inserting we rotate the tree based on conditions, so that the inserted element is closer to the root or
+   becomes the root itself.
+
+   Inserted element is the root, and by splaying we get the node to which the new element will be pointing to.
                  
 3. Red Black Tree
    
