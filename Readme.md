@@ -42,6 +42,7 @@ Binary Search Tree
  1. AVL Tree
     After every operation, we make sure the difference of the heights of left subtree and right subtree of any node, can not
     be greater than 1.
+    **------------------------LOGIC**
     Operation will use recursion, so think of Stack will writing the code
     If -1 > H(left-Right) < 1, perform Rotations
     
@@ -139,6 +140,7 @@ Binary Search Tree
 
 2. Splay Tree
 
+   **------------------------LOGIC**
    Organisation of the tree on basis of frequently accessed / inserted elements become closer to the root node
 
    Before inserting we rotate the tree based on conditions, so that the inserted element is closer to the root or
@@ -147,6 +149,24 @@ Binary Search Tree
    Inserted element is the root, and by splaying we get the node to which the new element will be pointing to.
                  
 3. Red Black Tree
+
+   To Balance, we use recoloring and rotation
+
+   Recoloring meaning : change the color of the node, if it is red, then change it to black
+   **------------------------LOGIC**
+   insert the node like we insert in binary tree, assign the color as 'red'
+   if the node is root, change the color to 'black'
+   if the node is not root, check it's parent color (after insertion ofcourse)
+        = if the parent node is black let it be, 
+        = if the parent node is red, (conflict)
+                then to resolve conflict we have to check the ancestors, it must be alternate in color, 
+                immediate parent color (from red - change it to black), then it's parent if black , 
+                change to red
+                make sure it follows, but also make sure the root must be black
+                if red check, it's immediate parent color is black ( no conflict)
+
+    
+
    
 4. AA Tree
 

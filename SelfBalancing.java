@@ -179,6 +179,7 @@ class AVLTree {
     }
 
     static void start(){
+        System.out.println("---------AVL---------");
         AVLTree obj = new AVLTree();
         obj.root = obj.insertElement(obj.root,50);
         obj.root = obj.insertElement(obj.root,40);
@@ -198,6 +199,7 @@ class AVLTree {
 class RedBlack {
 
     RedBlackNodes root;
+    boolean conflictCase = false;
     RedBlack(){
         root = null;
     }
@@ -217,39 +219,90 @@ class RedBlack {
             this.parent = null;
         }
     }
+    
+    RedBlackNodes leftRotate(RedBlackNodes head){
+        RedBlackNodes newHead = head.right;
+        RedBlackNodes y = newHead.left;
+        newHead.left = head;
+        head.right = y;
+        head.parent = newHead;
+        if(y!=null)
+            y.parent = head;
+        return newHead;
+    }
 
-    RedBlackNodes insert(RedBlackNodes current, int id){
-        if(root == null){
+    RedBlackNodes rightRotate(RedBlackNodes head){
+        RedBlackNodes newHead = head.left;
+        RedBlackNodes y = newHead.right;
+        newHead.right = head;
+        head.left = y;
+        head.parent = newHead;
+        if(y!=null)
+            y.parent = head;
+        return newHead;
+    }
+
+    RedBlackNodes RRInsert(RedBlackNodes head, int id){
+        conflictCase = false;
+        if(head == null){
             return new RedBlackNodes(id);
         }
+
+        if(head.id < id){
+            head.right = RRInsert(head.right, id);
+            head.right.parent = head;
+            if(head != root){
+                /* this is not the root position, we will check for conflicts */
+                if(head.color == 'R' && head.right.color == 'R'){
+                    conflictCase = true;
+                }
+            }
+        }
         else {
-            if(id < current.id){
-                current.left = insert(current.left, id);
-                current.left.parent = current;
-                if(current != root){ /* if this is not equal to starting point */
-                    if(current.color == 'R' && current.left.color == 'R'){
-                        /* to judge RR conflict */
-                    }
+            head.left = RRInsert(head.right, id);
+            head.left.parent = head;
+            if(head != root) {
+                if(head.color == 'R' && head.left.color == 'R'){
+                    conflictCase = true;
                 }
             }
-            else if ( id > current.id) {
-                current.right = insert(current.right, id);
-                current.right.parent = current;
-                if(current != root){ /* if this is not equal to starting point */
-                    if(current.color == 'R' && current.right.color == 'R'){
-                        /* to judge RR conflict */
-                    }
-                }
+        }
+
+        if(conflictCase) {
+            /* in conflict case we check the ancestors, thus we kept parent as one of the keys */
+            if(head.parent.right == head){ 
+                /* to check conflict occured on which left /right : can check also check by which if else ran, but why extra variable when we can use this logic */
+
             }
-            return current;
+            else {
+                /* to do later */
+            }
+        }
+        return head;
+    }
+    RedBlackNodes insert(RedBlackNodes head, int id){
+        if(head == null){
+            RedBlackNodes newnode = new RedBlackNodes(id);
+            newnode.color = 'B';
+            return newnode;
+        }
+        else {
+            return RRInsert(head, id);
         }
     }
 
     static void start(){
         RedBlack obj = new RedBlack();
-        obj.root = obj.insert(obj.root, 0);
-
+        System.out.println("---------RED / BLACK---------");
+        obj.root = obj.insert(obj.root,50);
+        obj.root = obj.insert(obj.root,40);
+        obj.root = obj.insert(obj.root,60);
+        obj.root = obj.insert(obj.root,45);
+        obj.root = obj.insert(obj.root,55);
+        obj.root = obj.insert(obj.root,70);
+        obj.root = obj.insert(obj.root,80);
     }
+
 }
 
 class Splay {
@@ -335,21 +388,22 @@ class Splay {
     }
 
     static void start(){
+        System.out.println("---------SPLAY---------");
         Splay obj = new Splay();
         obj.root = obj.insert(obj.root,50);
         obj.root = obj.insert(obj.root,40);
         obj.root = obj.insert(obj.root,60);
         obj.root = obj.insert(obj.root,45);
-        // obj.root = obj.insert(obj.root,55);
-        // obj.root = obj.insert(obj.root,70);
-        // obj.root = obj.insert(obj.root,80);
+        obj.root = obj.insert(obj.root,55);
+        obj.root = obj.insert(obj.root,70);
+        obj.root = obj.insert(obj.root,80);
     }
 }
 public class SelfBalancing {
     
     static void initiate(){
-        // AVLTree.start();
-        // RedBlack.start();
+        AVLTree.start();
+        RedBlack.start();
         Splay.start();
     }
     public static void main(String[] args) {
