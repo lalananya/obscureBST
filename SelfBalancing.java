@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /* Self Balancing a BST, so the basic rule remains the same, 
     nodes left to the root, smaller | 
     nodes right to the root, greater |
@@ -220,6 +222,15 @@ class RedBlack {
         }
     }
     
+    
+    void preOder(RedBlackNodes node){
+        if(node != null){
+            System.out.println("At : " + node.id);
+            preOder(node.left);
+            preOder(node.right);
+        }
+    }
+
     RedBlackNodes leftRotate(RedBlackNodes head){
         RedBlackNodes newHead = head.right;
         RedBlackNodes y = newHead.left;
@@ -291,9 +302,9 @@ class RedBlack {
         }
     }
 
-    static void start(){
-        RedBlack obj = new RedBlack();
+    static void start() {
         System.out.println("---------RED / BLACK---------");
+        RedBlack obj = new RedBlack();
         obj.root = obj.insert(obj.root,50);
         obj.root = obj.insert(obj.root,40);
         obj.root = obj.insert(obj.root,60);
@@ -301,6 +312,7 @@ class RedBlack {
         obj.root = obj.insert(obj.root,55);
         obj.root = obj.insert(obj.root,70);
         obj.root = obj.insert(obj.root,80);
+        obj.preOder(obj.root);
     }
 
 }
@@ -397,6 +409,93 @@ class Splay {
         obj.root = obj.insert(obj.root,55);
         obj.root = obj.insert(obj.root,70);
         obj.root = obj.insert(obj.root,80);
+        obj.preOder(obj.root);
+    }
+}
+
+
+class Treaps {
+    
+    TreapsNode root;
+
+    Treaps(){
+        root = null;
+    }
+    class TreapsNode {
+        int id;
+        TreapsNode left;
+        TreapsNode right;
+        int priority; /* can be as per input , for now we are using a random number */
+
+        TreapsNode(int id){
+            this.id = id;
+            this.left = null;
+            this.right = null;
+            this.priority = new Random().nextInt(100);
+        }
+    }
+
+    void preOder(TreapsNode node){
+        if(node != null){
+            System.out.println("At : " + node.id + " with height : " + node.priority);
+            preOder(node.left);
+            preOder(node.right);
+        }
+    }
+
+    TreapsNode leftRotate(TreapsNode head){
+        TreapsNode newHead = head.right;
+        TreapsNode y = newHead.left;
+
+        newHead.left = head;
+        head.right = y;
+
+        return newHead;
+    }
+
+    TreapsNode rightRotate(TreapsNode head){
+        TreapsNode newHead = head.left;
+        TreapsNode y = newHead.right;
+
+        newHead.right = head;
+        head.left = y;
+
+        return newHead;
+    }
+
+    TreapsNode insert(TreapsNode head, int id){
+        if(head == null){
+            return new TreapsNode(id);
+        }
+        else {
+            if(head.id < id) {
+                head.right = insert(head.right, id);
+                if(head.right !=null && head.right.priority > head.priority) {
+                    head = leftRotate(head);
+                }
+            }
+            else {
+                head.left = insert(head.left, id);
+                if(head.left !=null && head.left.priority > head.priority){
+                    head = rightRotate(head);
+                }
+            }
+        }
+
+        return head;
+    }
+
+    static void start(){
+        System.out.println("---------TREAPS---------");
+        Treaps obj = new Treaps();
+        obj.root = obj.insert(obj.root,50);
+        obj.root = obj.insert(obj.root,40);
+        obj.root = obj.insert(obj.root,60);
+        obj.root = obj.insert(obj.root,45);
+        obj.root = obj.insert(obj.root,55);
+        obj.root = obj.insert(obj.root,70);
+        obj.root = obj.insert(obj.root,80);
+        obj.preOder(obj.root);
     }
 }
 public class SelfBalancing {
@@ -405,6 +504,7 @@ public class SelfBalancing {
         AVLTree.start();
         RedBlack.start();
         Splay.start();
+        Treaps.start();
     }
     public static void main(String[] args) {
         initiate();

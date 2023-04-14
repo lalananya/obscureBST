@@ -170,7 +170,19 @@ Binary Search Tree
    
 4. AA Tree
 
+   Variatio of Red Black Tree
+
 5. Treaps
+   
+   Somewhat similar, to red black and AVL , but they do not guarantee O(logn), uses randomization  and binary Heap
+   to maintain balance with high probability.
+
+   Every Node of Treap maintains = key (acc to BST), priority(follows max heap property)
+
+   Here, instead of colors or height we check the priority, and then rotate it
+
+   = insert as per normal BST
+   = check if inserted node priority is greater than it's parent, this is violation and then we rotate it
 
 6. ScapeGoat Tree
 
