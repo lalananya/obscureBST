@@ -138,6 +138,8 @@ Binary Search Tree
     Above are just the known cases, we are going to add some random exceptions as well, to make the rotations complex
     still would want the tree to be balanced
 
+    **EASY !!**
+
 2. Splay Tree
 
    **------------------------LOGIC**
@@ -147,32 +149,12 @@ Binary Search Tree
    becomes the root itself.
 
    Inserted element is the root, and by splaying we get the node to which the new element will be pointing to.
+
+   **EASY !!**
                  
-3. Red Black Tree
+3. Red Black Tree / AA Tree : LATER not required now
 
-   To Balance, we use recoloring and rotation
-
-   Recoloring meaning : change the color of the node, if it is red, then change it to black
-   **------------------------LOGIC**
-   insert the node like we insert in binary tree, assign the color as 'red'
-   if the node is root, change the color to 'black'
-   if the node is not root, check it's parent color (after insertion ofcourse)
-        = if the parent node is black let it be, 
-        = if the parent node is red, (conflict)
-                then to resolve conflict we have to check the ancestors, it must be alternate in color, 
-                immediate parent color (from red - change it to black), then it's parent if black , 
-                change to red
-                make sure it follows, but also make sure the root must be black
-                if red check, it's immediate parent color is black ( no conflict)
-
-    
-
-   
-4. AA Tree
-
-   Variatio of Red Black Tree
-
-5. Treaps
+4. Treaps
    
    Somewhat similar, to red black and AVL , but they do not guarantee O(logn), uses randomization  and binary Heap
    to maintain balance with high probability.
@@ -184,6 +166,28 @@ Binary Search Tree
    = insert as per normal BST
    = check if inserted node priority is greater than it's parent, this is violation and then we rotate it
 
-6. ScapeGoat Tree
+   **EASY !!**
 
-7. BTree
+5. BTree
+
+*Comparision*
+
+AVL, Splay, Treaps, BTree, BSTs 
+
+    Searching / Insertion / Deletion = 
+                BST   :  normally in BST searching tends to 0(height of the tree)
+                AVL   :  as we try to balance the tree, searching can happend in 0(logn), it is guaranteed.
+                         in general AVL is good.
+                         uses more space as it is storing height information
+                         the standard balance BST
+                Splay :  as we try to bring closer to the root, keeping in mind recently accessed / frequently accesed
+                         here if we have a use case where we need repeated lookups, we can use this.
+                         in real world there are lesser changes of dealing with lesser amount of data, so splay works good
+                         worst case for skewed tree structure
+                         Not the standard balance BST
+                Treaps : space required to keep the priority
+                         and we tend to balance as per priority
+                         now it could result in a skewed structure becuase all we care about is skewed
+                BTree  : 
+    
+    In general AVL Tree is enough to target multiple number of use cases.
