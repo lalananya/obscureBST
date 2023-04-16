@@ -1,12 +1,3 @@
-            Trees are a little complex data structure, and there are many types as per use cases, 
-            tried to understand different trees on basis of where to use , their difference, 
-                                    and performing complex operations
-
-                                TO KNOW ABOUT DS, A LITTLE MORE 
-
-                                        *LANGUAGE : JAVA*
-                        *REFERENCE : GeeksForGeeks, YouTube, Upgrad, GOOGLE*
-
 *BST.java*
 
 Binary Search Tree
@@ -164,11 +155,10 @@ Binary Search Tree
 
    **EASY !!**
 
-5. BTree
 
 *Comparision*
 
-AVL, Splay, Treaps, BTree, BSTs 
+AVL, Splay, Treaps, BSTs 
 
     Searching / Insertion / Deletion = 
                 BST   :  normally in BST searching tends to 0(height of the tree)
