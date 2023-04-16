@@ -1,3 +1,5 @@
+package BinarySearchTree;
+
 /* linked representation of a tree
  * @addNodesToTree
  * @calculateHeight
@@ -6,7 +8,19 @@
  * @postOrder
  * @preorder
  */
+
 public class Creation {
+    class Node {
+        int id;
+        int height;
+        Node left;
+        Node right;
+    
+        Node(int id){
+            this.id = id;
+            height = 0;
+        }
+    }
     Node root;
     static int size;
 

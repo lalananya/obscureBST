@@ -1,9 +1,23 @@
+package BinarySearchTree;
+
 import java.util.Random;
 
 /* Self Balancing a BST, so the basic rule remains the same, 
     nodes left to the root, smaller | 
     nodes right to the root, greater |
  */
+class Node {
+    int id;
+    int height;
+    Node left;
+    Node right;
+
+    Node(int id){
+        this.id = id;
+        height = 0;
+    }
+}
+
 class AVLTree {
     /* AVL is about the balance factor not about the height of the tree */
     Node root;
